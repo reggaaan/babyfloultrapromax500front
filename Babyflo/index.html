@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Babyflo Premium Shop</title>
+  
+  <link rel="icon" type="image/png" href="images/logo.png">
+  
+  <link rel="stylesheet" href="style.css">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="navbar">
+  <a href="#home" class="logo">
+    <i class="fa-solid fa-baby"></i>
+    Babyflo
+  </a>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#products">Products</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <div class="nav-buttons" style="display: flex; align-items: center; gap: 15px;">
+    
+    <div id="nav-auth-container" style="display: flex; align-items: center; gap: 15px;">
+      
+      <a href="login.html" id="signInBtn" class="login-btn" style="text-decoration: none; display: flex; align-items: center; gap: 8px; color: #4a4a4a; font-weight: 500;">
+        <i class="fa-solid fa-user"></i> <span>Sign In</span>
+      </a>
+      
+      <div id="userProfileActive" style="display: none; align-items: center; gap: 12px;">
+        <span id="welcomeUserName" style="font-weight: 600; color: #4a4a4a; font-size: 0.9rem;"></span>
+        <button id="logoutBtn" style="background-color: #ffe4ec; color: #ff7fa2; border: none; padding: 5px 12px; border-radius: 6px; font-weight: 600; cursor: pointer;">
+          Log Out
+        </button>
+      </div>
+
+    </div>
+    
+    <button class="cart-btn" id="openCart">
+      <i class="fa-solid fa-cart-shopping"></i>
+      <span id="cart-count">0</span>
+    </button>
+  </div>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-content">
+    <span class="hero-badge">Gentle • Fresh • Baby Safe</span>
+    <h1>Premium Babyflo <span>Colognes</span></h1>
+    <p>Soft comforting scents for your little one. Elegant baby colognes with floral, fruity, citrus, powdery and musky fragrance notes.</p>
+    <div class="hero-buttons">
+        <button id="shopNowBtn" class="primary-btn">Shop Now</button>
+        <button id="learnMoreBtn" class="secondary-btn">Learn More</button>
+    </div>
+  </div>
+  <div class="hero-image">
+    <img src="images/hero-cologne.webp" alt="Babyflo Collection">
+  </div>
+</section>
+
+<section class="promo-banner">
+  <div class="promo-card">
+    <i class="fa-solid fa-gift"></i>
+    <h3>15% OFF</h3>
+    <p>Use Code: BABY15</p>
+  </div>
+
+  <div class="promo-card">
+    <i class="fa-solid fa-truck"></i>
+    <h3>Free Delivery</h3>
+    <p>Orders above ₱500</p>
+  </div>
+
+  <div class="promo-card">
+    <i class="fa-solid fa-star"></i>
+    <h3>Best Seller</h3>
+    <p>Babyflo Pink Fantasy</p>
+  </div>
+</section>
+
+<section class="search-section">
+  <input type="text" id="searchInput" placeholder="What are you looking for?" />
+</section>
+
+<section class="products-section" id="products">
+  <div class="section-title">
+    <h2>Featured Products</h2>
+    <p>Babyflo 100mL Cologne Collection</p>
+  </div>
+  
+  <div class="products-grid" id="productGrid"></div>
+</section>
+
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h2>Your Cart</h2>
+    <button id="closeCart"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  
+  <div id="cartItemsList"></div>
+  
+  <div class="cart-footer">
+    <h3>Total: <span id="cartTotalText">₱0.00</span></h3>
+    <input type="text" id="voucherInput" placeholder="Enter voucher code" aria-label="Voucher code">
+    <button id="applyVoucher">Apply Voucher</button>
+    <button class="checkout-btn" onclick="window.location.href='checkout.html'">Checkout</button>
+  </div>
+</div>
+
+<section class="about-section" id="about">
+  <div class="section-title">
+    <h2>About Babyflo</h2>
+  </div>
+  <p style="text-align: center; max-width: 600px; margin: 0 auto; line-height: 1.8; color: #555;">
+    Babyflo provides gentle and comforting baby products designed for delicate skin. Our fragrances are inspired by softness, freshness and loving care.
+  </p>
+</section>
+
+<section class="testimonial-section">
+  <div class="testimonial-card">
+    <p>“Very soft fragrance and perfect for babies!”</p>
+    <h4 style="margin-top: 15px; color: #ff7fa2;">- Samantha</h4>
+  </div>
+  <div class="testimonial-card">
+    <p>“The pastel design and scent are amazing.”</p>
+    <h4 style="margin-top: 15px; color: #ff7fa2;">- Andrea</h4>
+  </div>
+</section>
+
+<section class="faq-section">
+  <div class="section-title">
+    <h2>Frequently Asked Questions</h2>
+  </div>
+  <div class="faq-item">
+    <h3>Is Babyflo safe for newborns?</h3>
+    <p style="margin-top: 10px; color: #666;">Yes, Babyflo is gentle and baby safe.</p>
+  </div>
+  <div class="faq-item">
+    <h3>What payment methods are accepted?</h3>
+    <p style="margin-top: 10px; color: #666;">GCash, Maya and COD.</p>
+  </div>
+</section>
+
+<section class="contact-section" id="contact">
+  <div class="section-title">
+    <h2>Contact Us</h2>
+  </div>
+  <form class="contact-form" id="dbContactForm" method="post" action="#" novalidate>
+    <input type="text" id="contactName" placeholder="Full Name" required aria-label="Full name">
+    
+    <!-- Changed type to email to satisfy C# backend verification mapping -->
+    <input type="email" id="contactEmail" placeholder="Email Address" required aria-label="Email address">
+    
+    <!-- Added hardware level pad filters to drop keyboard alpha strokes automatically -->
+    <input type="tel" id="contactPhone" placeholder="Contact Number" inputmode="numeric" pattern="[0-9]*" aria-label="Contact number">
+    
+    <textarea id="contactMessage" placeholder="Message" required aria-label="Message"></textarea>
+    <button type="submit" class="primary-btn">Send Message</button>
+  </form>
+</section>
+
+<footer>
+  <div style="font-size: 1.5rem; font-weight: 700; color: #ff7fa2; margin-bottom: 15px;">Babyflo</div>
+  <div class="social-links">
+    <a href="#"><i class="fab fa-facebook"></i></a>
+    <a href="#"><i class="fab fa-instagram"></i></a>
+    <a href="#"><i class="fab fa-tiktok"></i></a>
+  </div>
+  <p style="font-size: 0.9rem; color: #888; margin-top: 15px;">© 2026 Babyflo. All Rights Reserved.</p>
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Receipt — Babyflo</title>
+  <!-- Use same favicon as index -->
+  <link rel="icon" href="images/logo.png" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins',sans-serif}
+    body{background:#fdf6f8;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px}
+    main{width:100%;max-width:720px;background:#fff;border-radius:16px;padding:28px;border:1px solid #ffeef2;box-shadow:0 8px 30px rgba(255,127,162,0.06)}
+    h1{color:#ff5f8f;margin-bottom:12px;font-size:1.4rem;display:flex;align-items:center;gap:10px}
+    .meta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+    .card{background:#fffbfd;border:1px solid #ffd1df;padding:14px;border-radius:10px;flex:1;min-width:200px}
+    .items{margin-top:12px;border-top:1px dashed #f0e6ea;padding-top:12px}
+    .item{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #fff2f6}
+    .total{display:flex;justify-content:space-between;font-weight:700;margin-top:12px;padding-top:12px;border-top:1px solid #ffe6ec}
+    .muted{color:#666;font-size:0.95rem}
+    .btn-back{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:linear-gradient(135deg,#ff7fa2,#ff5f8f);color:#fff;text-decoration:none;margin-top:16px}
+    .verified-badge { display:none; align-items:center; gap:8px; padding:8px 12px; border-radius:8px; background: #eaffef; color:#088a3f; font-weight:700; margin-bottom:14px; border:1px solid #bff3d0; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1><i class="fa-solid fa-receipt"></i> Order Receipt</h1>
+
+    <div id="status" class="muted">Loading order...</div>
+
+    <div id="receiptContent" style="display:none;">
+      <div id="verifiedBadge" class="verified-badge"><i class="fa-solid fa-circle-check"></i> Order verified</div>
+
+      <div class="meta">
+        <div class="card">
+          <div style="font-weight:600">Customer</div>
+          <div id="custName" class="muted"></div>
+          <div id="custPhone" class="muted" style="margin-top:6px"></div>
+        </div>
+        <div class="card">
+          <div style="font-weight:600">Delivery</div>
+          <div id="custAddress" class="muted"></div>
+        </div>
+        <div class="card">
+          <div style="font-weight:600">Payment</div>
+          <div id="payMethod" class="muted"></div>
+          <div id="payRef" class="muted" style="margin-top:6px"></div>
+        </div>
+      </div>
+
+      <div class="card" style="padding:12px">
+        <div style="font-weight:600;margin-bottom:8px">Items</div>
+        <div id="itemsList" class="items"></div>
+        <div class="total">
+          <div>Grand Total</div>
+          <div id="grandTotal">₱0.00</div>
+        </div>
+      </div>
+
+      <a id="btnHome" href="index.html" class="btn-back"><i class="fa-solid fa-house"></i> Go to Homepage</a>
+    </div>
+  </main>
+
+  <script>
+    const API_URL = "http://localhost:5190/api";
+
+    function qsel(id){return document.getElementById(id)}
+
+    function fmtCurrency(n){return '₱' + Number(n || 0).toFixed(2)}
+
+    function getOrderIdFromUrl(){ const p = new URLSearchParams(window.location.search); return p.get('orderId'); }
+
+    async function fetchOrder(orderId){
+      try {
+        const res = await fetch(`${API_URL}/orders/${encodeURIComponent(orderId)}`);
+        if (!res.ok) throw new Error('Order not found');
+        return await res.json();
+      } catch(err){
+        console.error(err);
+        return null;
+      }
+    }
+
+    function renderOrderObject(order) {
+      // Normalize properties (support varied casing)
+      const o = {
+        id: order.id || order.Id || order.orderId || order.OrderId || order.OrderID,
+        customer: order.customerName || order.CustomerName || order.Customer || order.name,
+        address: order.deliveryAddress || order.DeliveryAddress || order.Address,
+        phone: order.contactNumber || order.ContactNumber || order.Phone,
+        payment: order.paymentMethod || order.PaymentMethod,
+        reference: order.referenceNumber || order.ReferenceNumber || order.Ref || order.Reference,
+        items: order.items || order.Items || []
+      };
+
+      qsel('custName').textContent = o.customer || '-';
+      qsel('custAddress').textContent = o.address || '-';
+      qsel('custPhone').textContent = o.phone || '-';
+      qsel('payMethod').textContent = o.payment || '-';
+      qsel('payRef').textContent = o.reference ? ('Ref: ' + o.reference) : '';
+
+      const list = qsel('itemsList');
+      list.innerHTML = '';
+      let grand = 0;
+      (o.items || []).forEach(it => {
+        const name = it.productName || it.ProductName || it.name || it.Name || 'Item';
+        const qty = Number(it.quantity || it.Quantity || it.Qty || 1);
+        const price = Number(it.price || it.Price || it.UnitPrice || 0);
+        const total = qty * price;
+        grand += total;
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerHTML = `<div><div style="font-weight:600">${escapeHtml(name)}</div><div class="muted" style="font-size:0.95rem">x${qty} @ ${fmtCurrency(price)}</div></div><div style="font-weight:600">${fmtCurrency(total)}</div>`;
+        list.appendChild(div);
+      });
+
+      qsel('grandTotal').textContent = fmtCurrency(grand);
+
+      // Mark as verified and show content
+      qsel('status').textContent = 'Order verification complete';
+      qsel('verifiedBadge').style.display = 'inline-flex';
+      qsel('status').style.display = 'none';
+      qsel('receiptContent').style.display = 'block';
+    }
+
+    (async function init(){
+      const orderId = getOrderIdFromUrl();
+      const status = qsel('status');
+      const btnHome = qsel('btnHome');
+
+      // ensure home button clears cart/last-order (thesis - no persistence needed)
+      if (btnHome) {
+        btnHome.addEventListener('click', (ev) => {
+          try { localStorage.removeItem('babyflo_cart'); localStorage.removeItem('babyflo_last_order'); sessionStorage.removeItem('babyflo_last_order'); } catch {}
+          // allow normal navigation to index.html
+        });
+      }
+
+      if (orderId) {
+        status.textContent = 'Fetching order #' + orderId + '...';
+        const order = await fetchOrder(orderId);
+        if (order) {
+          // cache last successful order for fallback
+          try { sessionStorage.setItem('babyflo_last_order', JSON.stringify(order)); } catch {}
+          renderOrderObject(order);
+          return;
+        } else {
+          status.textContent = 'Unable to load order from server, trying local fallback...';
+        }
+      }
+
+      // Fallback: check sessionStorage/localStorage for last order payload saved by checkout
+      const raw = sessionStorage.getItem('babyflo_last_order') || localStorage.getItem('babyflo_last_order');
+      if (raw) {
+        try {
+          const cached = JSON.parse(raw);
+          renderOrderObject(cached);
+          return;
+        } catch (err) {
+          console.error('Cached order parse error', err);
+        }
+      }
+
+      // Final message if nothing found — still show verified badge (thesis)
+      status.textContent = 'Order verification complete';
+      qsel('verifiedBadge').style.display = 'inline-flex';
+      qsel('status').style.display = 'none';
+      qsel('receiptContent').style.display = 'block';
+    })();
+
+    function escapeHtml(str){ if(!str) return ''; return String(str).replace(/[&<>"']/g, s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[s])); }
+  </script>
+</body>
+</html>

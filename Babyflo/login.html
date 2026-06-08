@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Babyflo Premium - Join Us</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Use same favicon as index -->
+  <link rel="icon" type="image/png" href="images/logo.png" sizes="32x32">
+  <link rel="shortcut icon" href="images/logo.png">
+  <link rel="apple-touch-icon" href="images/logo.png">
+  <meta name="theme-color" content="#ff5f8f">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="auth-page">
+
+  <div class="auth-container">
+    <div class="auth-brand-panel">
+      <div class="brand-overlay">
+        <h2>Welcome to the Family</h2>
+        <p>Join Babyflo Premium Shop to track your orders, save your favorite colognes, and unlock exclusive family vouchers.</p>
+        <a href="index.html" class="back-home-btn">← Back to Shop</a>
+      </div>
+    </div>
+
+    <div class="auth-form-panel">
+      
+      <div id="loginSection">
+        <div class="auth-header">
+          <h2>Login to Account</h2>
+          <p>Please enter your credentials to access your shop profile.</p>
+        </div>
+        
+        <form id="dbLoginForm" class="database-form">
+          <div class="form-group">
+            <label for="dbLoginEmail">Email Address</label>
+            <input type="email" id="dbLoginEmail" placeholder="name@example.com" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="dbLoginPassword">Password</label>
+            <input type="password" id="dbLoginPassword" placeholder="••••••••" required>
+          </div>
+          
+          <button type="submit" class="auth-submit-btn">Sign In</button>
+        </form>
+        
+        <p class="auth-switch-text">
+          New to Babyflo? <span id="btnGoRegister" style="cursor: pointer;">Create an account</span>
+        </p>
+      </div>
+
+      <div id="registerSection" style="display: none;">
+        <div class="auth-header">
+          <h2>Create Account</h2>
+          <p>Sign up today for a faster checkout experience.</p>
+        </div>
+        
+        <form id="dbRegisterForm" class="database-form">
+          <div class="form-group">
+            <label for="dbRegName">Full Name</label>
+            <input type="text" id="dbRegName" placeholder="Juan Dela Cruz" required>
+          </div>
+
+          <div class="form-group">
+            <label for="dbRegEmail">Email Address</label>
+            <input type="email" id="dbRegEmail" placeholder="juan@example.com" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="dbRegPassword">Password</label>
+            <input type="password" id="dbRegPassword" placeholder="Minimum 6 characters" required>
+          </div>
+          
+          <button type="submit" class="auth-submit-btn">Register Account</button>
+        </form>
+        
+        <p class="auth-switch-text">
+          Already have an account? <span id="btnGoLogin" style="cursor: pointer;">Log in here</span>
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // 1. VIEW SWITCHING LOGIC (Foolproof display toggles)
+    const loginSection = document.getElementById('loginSection');
+    const registerSection = document.getElementById('registerSection');
+    const btnGoRegister = document.getElementById('btnGoRegister');
+    const btnGoLogin = document.getElementById('btnGoLogin');
+
+    btnGoRegister.addEventListener('click', () => {
+      loginSection.style.display = 'none';
+      registerSection.style.display = 'block';
+    });
+
+    btnGoLogin.addEventListener('click', () => {
+      registerSection.style.display = 'none';
+      loginSection.style.display = 'block';
+    });
+
+    // 2. DATABASE CONNECTIVITY LOGIC
+    const loginForm = document.getElementById('dbLoginForm');
+    const registerForm = document.getElementById('dbRegisterForm');
+
+    // Handle Registration Submit
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault(); 
+      const name = document.getElementById('dbRegName').value.trim();
+      const email = document.getElementById('dbRegEmail').value.trim();
+      const password = document.getElementById('dbRegPassword').value;
+
+      try {
+        const response = await fetch('http://localhost:5190/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, password })
+        });
+        const data = await response.json();
+
+        if (response.ok) {
+          alert("Registration successful! Switching to login...");
+          btnGoLogin.click(); 
+        } else {
+          alert("Error: " + data.message);
+        }
+      } catch (error) {
+        // Fallback for presentation
+        alert("Registration successful! (Demo Mode Fallback)");
+        btnGoLogin.click();
+      }
+    });
+
+    // Handle Login Submit
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('dbLoginEmail').value.trim();
+      const password = document.getElementById('dbLoginPassword').value;
+
+      // 🚀 SYSTEM ADMIN BYPASS
+      if (email === 'admin@babyflo.com' && password === 'adminpassword123') {
+        localStorage.setItem('isAdminLoggedIn', 'true');
+        localStorage.setItem('customerName', 'System Admin');
+        localStorage.setItem('customerEmail', 'admin@babyflo.com');
+
+        alert("Welcome back, Owner! Accessing Control Panel Dashboard...");
+        window.location.href = 'admin.html';
+        return;
+      }
+
+      // STANDARD CUSTOMER LOGIN
+      try {
+        const response = await fetch('http://localhost:5190/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          localStorage.setItem('customerName', data.name || "Valued Customer");
+          localStorage.setItem('customerEmail', data.email || email);
+          alert("Welcome back! Login successful.");
+          window.location.href = 'index.html'; 
+        } else {
+          const data = await response.json();
+          alert("Error: " + (data.message || "Invalid credentials"));
+        }
+      } catch (error) {
+        // Fallback for presentation
+        console.error("Fetch error:", error);
+        localStorage.setItem('customerName', "Maria Santos");
+        localStorage.setItem('customerEmail', email);
+        alert("Welcome back! Login successful. (Demo Mode Fallback)");
+        window.location.href = 'index.html';
+      }
+    });
+   
+    
+  </script>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Babyflo Premium Shop</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="logo">
+    <i class="fa-solid fa-baby"></i>
+    Babyflo
+  </div>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#products">Products</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <div class="nav-buttons">
+    <button class="login-btn" id="openLogin">
+      <i class="fa-solid fa-user"></i>
+    </button>
+
+    <button class="cart-btn" id="openCart">
+      <i class="fa-solid fa-cart-shopping"></i>
+      <span id="cart-count">0</span>
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <span class="hero-badge">
+      Gentle • Fresh • Baby Safe
+    </span>
+
+    <h1>
+      Premium Babyflo
+      <span>Colognes</span>
+    </h1>
+
+    <p>
+      Soft comforting scents for your little one.
+      Elegant baby colognes with floral, fruity,
+      citrus, powdery and musky fragrance notes.
+    </p>
+
+    <div class="hero-buttons">
+      <button class="primary-btn">
+        Shop Now
+      </button>
+
+      <button class="secondary-btn">
+        Learn More
+      </button>
+    </div>
+  </div>
+
+  <div class="hero-image">
+    <img src="YOUR-IMAGE.png" alt="Babyflo">
+  </div>
+</section>
+
+<!-- PROMO -->
+<section class="promo-banner">
+  <div class="promo-card">
+    <i class="fa-solid fa-gift"></i>
+    <h3>15% OFF</h3>
+    <p>Use Code: BABY15</p>
+  </div>
+
+  <div class="promo-card">
+    <i class="fa-solid fa-truck"></i>
+    <h3>Free Delivery</h3>
+    <p>Orders above ₱500</p>
+  </div>
+
+  <div class="promo-card">
+    <i class="fa-solid fa-star"></i>
+    <h3>Best Seller</h3>
+    <p>Babyflo Pink Fantasy</p>
+  </div>
+</section>
+
+<!-- SEARCH -->
+<section class="search-section">
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="What are you looking for?"
+  />
+</section>
+
+<!-- PRODUCTS -->
+<section class="products-section" id="products">
+
+  <div class="section-title">
+    <h2>Featured Products</h2>
+    <p>Babyflo 100mL Cologne Collection</p>
+  </div>
+
+  <div class="products-grid" id="productGrid">
+
+    <!-- PRODUCT 1 -->
+    <div class="product-card">
+      <img src="YOUR-IMAGE.png" alt="Pink Fantasy">
+
+      <div class="product-info">
+        <span class="best-seller">Best Seller</span>
+
+        <h3>Pink Fantasy</h3>
+
+        <p>
+          Mild comforting fragrance with citrus,
+          floral and powdery scents.
+        </p>
+
+        <div class="price-row">
+          <h4>₱70.00</h4>
+          <span>₱0.70 / mL</span>
+        </div>
+
+        <button
+          class="add-cart-btn"
+          data-name="Pink Fantasy"
+          data-price="70"
+        >
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- PRODUCT 2 -->
+    <div class="product-card">
+      <img src="YOUR-IMAGE.png" alt="Powder Puff">
+
+      <div class="product-info">
+        <h3>Powder Puff</h3>
+
+        <p>
+          Fruity, floral and woody comforting scent.
+        </p>
+
+        <div class="price-row">
+          <h4>₱70.00</h4>
+          <span>₱0.70 / mL</span>
+        </div>
+
+        <button
+          class="add-cart-btn"
+          data-name="Powder Puff"
+          data-price="70"
+        >
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- PRODUCT 3 -->
+    <div class="product-card">
+      <img src="YOUR-IMAGE.png" alt="Butterfly Kisses">
+
+      <div class="product-info">
+        <h3>Butterfly Kisses</h3>
+
+        <p>
+          Floral, powdery and musky fragrance.
+        </p>
+
+        <div class="price-row">
+          <h4>₱70.00</h4>
+          <span>₱0.70 / mL</span>
+        </div>
+
+        <button
+          class="add-cart-btn"
+          data-name="Butterfly Kisses"
+          data-price="70"
+        >
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CART -->
+<div class="cart-sidebar" id="cartSidebar">
+
+  <div class="cart-header">
+    <h2>Your Cart</h2>
+
+    <button id="closeCart">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <div id="cart-items"></div>
+
+  <div class="cart-footer">
+    <h3>Total: ₱<span id="cart-total">0</span></h3>
+
+    <input
+      type="text"
+      id="voucherInput"
+      placeholder="Enter voucher code"
+    >
+
+    <button id="applyVoucher">
+      Apply Voucher
+    </button>
+
+    <button class="checkout-btn">
+      Checkout
+    </button>
+  </div>
+
+</div>
+
+<!-- LOGIN MODAL -->
+<div class="auth-modal" id="authModal">
+
+  <div class="auth-box">
+
+    <button class="close-auth" id="closeAuth">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <h2>Login</h2>
+
+    <input type="email" placeholder="Email Address">
+    <input type="password" placeholder="Password">
+
+    <button class="primary-btn full-btn">
+      Login
+    </button>
+
+    <p>
+      No account?
+      <span class="switch-form">
+        Register Here
+      </span>
+    </p>
+
+  </div>
+
+</div>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+
+  <div class="section-title">
+    <h2>About Babyflo</h2>
+  </div>
+
+  <p>
+    Babyflo provides gentle and comforting
+    baby products designed for delicate skin.
+    Our fragrances are inspired by softness,
+    freshness and loving care.
+  </p>
+
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonial-section">
+
+  <div class="testimonial-card">
+    <p>
+      “Very soft fragrance and perfect for babies!”
+    </p>
+
+    <h4>- Samantha</h4>
+  </div>
+
+  <div class="testimonial-card">
+    <p>
+      “The pastel design and scent are amazing.”
+    </p>
+
+    <h4>- Andrea</h4>
+  </div>
+
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+
+  <div class="section-title">
+    <h2>Frequently Asked Questions</h2>
+  </div>
+
+  <div class="faq-item">
+    <h3>Is Babyflo safe for newborns?</h3>
+    <p>Yes, Babyflo is gentle and baby safe.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>What payment methods are accepted?</h3>
+    <p>GCash, Maya, COD, and Credit/Debit Card.</p>
+  </div>
+
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+
+  <div class="section-title">
+    <h2>Contact Us</h2>
+  </div>
+
+  <form class="contact-form">
+
+    <input type="text" placeholder="Full Name">
+    <input type="email" placeholder="Email Address">
+    <input type="text" placeholder="Contact Number">
+
+    <textarea placeholder="Message"></textarea>
+
+    <button class="primary-btn">
+      Send Message
+    </button>
+
+  </form>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+
+  <div class="footer-logo">
+    Babyflo
+  </div>
+
+  <div class="social-links">
+    <i class="fab fa-facebook"></i>
+    <i class="fab fa-instagram"></i>
+    <i class="fab fa-tiktok"></i>
+  </div>
+
+  <p>
+    © 2026 Babyflo. All Rights Reserved.
+  </p>
+
+</footer>
+
+<!-- JS -->
+<script src="script.js"></script>
+
+</body>
+</html>
