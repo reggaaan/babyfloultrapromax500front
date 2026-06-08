@@ -1,15 +1,13 @@
-const API_URL = "https://babyflo-ultra-pro-max.onrender.com/";
+// Remove the slash at the end, and ADD 'api'
+const API_URL = "https://babyflo-ultra-pro-max.onrender.com/api";
 
-// --- 1. DEFINE THE FUNCTION FIRST ---
 async function addNewProduct(event) {
-    event.preventDefault(); 
-    console.log("Attempting to publish...");
-
-    // This object MUST match your C# Product.cs properties
+    event.preventDefault();
+    
     const productData = {
         name: document.getElementById('productName').value,
         price: parseFloat(document.getElementById('productPrice').value),
-        volume: parseInt(document.getElementById('productVolume').value), // Matches C# Volume
+        volume: parseInt(document.getElementById('productVolume').value),
         description: document.getElementById('productDescription').value,
         imageUrl: document.getElementById('productImageUrl').value,
         inStock: true,
@@ -17,11 +15,8 @@ async function addNewProduct(event) {
         discount: 0
     };
 
-    // Basic Validation (Matches your C# [Range] and [Required] attributes)
-    if (!productData.name) { alert("Product name is required."); return; }
-    if (productData.price < 0.01) { alert("Price must be at least 0.01"); return; }
-
     try {
+        // Now this evaluates to: https://babyflo-ultra-pro-max.onrender.com/api/products
         const res = await fetch(`${API_URL}/products`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -29,7 +24,6 @@ async function addNewProduct(event) {
         });
 
         if (!res.ok) {
-            // This reads the specific error from C# if ModelState is invalid
             const err = await res.text();
             throw new Error(err || "Failed to publish");
         }
