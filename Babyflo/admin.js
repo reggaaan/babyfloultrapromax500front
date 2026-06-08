@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5190/api";
+const API_URL = "https://babyflo-ultra-pro-max.onrender.com/";
 
 // --- 1. DEFINE THE FUNCTION FIRST ---
 async function addNewProduct(event) {
