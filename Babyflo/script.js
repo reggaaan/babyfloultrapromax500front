@@ -110,7 +110,7 @@ async function loadDatabaseProducts() {
     if (!gridContainer) return;
 
     try {
-        const response = await fetch('http://localhost:5190/api/products');
+        const response = await fetch('https://babyflo-ultra-pro-max.onrender.com/api/products');
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
         fetchedProductsCache = await response.json();
@@ -364,7 +364,7 @@ function setupContactForm() {
                 Message: msgEl.value.trim()
             };
 
-            const res = await fetch('http://localhost:5190/api/contact/submit', {
+            const res = await fetch('https://babyflo-ultra-pro-max.onrender.com/api/contact/submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body)
